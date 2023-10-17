@@ -1,0 +1,105 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+autoscaling:
+  enabled: false
+  minReplicas: 3
+  maxReplicas: 10
+  ## targetCPUUtilizationPercentage only used if the cluster doesn't support autoscaling/v2beta
+  targetCPUUtilizationPercentage:
+  ## Otherwise for clusters that do support autoscaling/v2beta, use metrics
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
+
+global:
+  clusterDomain: cluster.local
+  updateStrategy: "RollingUpdate"
+  editor: "FinanceWise"
+  namespace: "financewise"
+  domainName: "dev.example.com"
+  pullPolicy: Always
+  imagePullSecrets:
+  - name: regsecret
+
+  monitoring:
+    datadog:
+      enabled: false
+      env: env_name
+      tennant: client_name
+      debug: false
+
+###################
+FinanceWiseServices:
+  enabled: true
+  name: fw-services
+  updateStrategy: "RollingUpdate"
+  image:
+    repository: fwinternal.azurecr.io
+    name: fw-services
+    tag: 7b15ade75ebe1c4d302bcccb69e5324158d7bf18
+    pullPolicy: Always
+
+  replicaCount: 1
+
+  apiPort: 3000
+
+  env:
+    - name: DB_URI
+      value: mongodb://user:pass@localhost:27017/fw-services?authSource=admin&readPreference=nearest&w=majority&replicaSet=rs0
+    - name: CHANNELS_URI
+      value: redis://localhost:6379
+
+  ingress:
+    enabled: false
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/affinity: "cookie"
+    hosts:
+      - host: fwservices.dev.example.com
+        paths:
+          - /
+    tls:
+     - secretName: fwservices.dev.example.com
+       hosts:
+         - fwservices.dev.example.com
+
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 1000Mi
+    limits:
+      cpu: 3000m
+      memory: 1000Mi
+
+  readinessProbe:
+    tcpSocket:
+      port: 3000
+    initialDelaySeconds: 60
+    timeoutSeconds: 1
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 5
+
+  livenessProbe:
+    tcpSocket:
+      port: 3000
+    initialDelaySeconds: 60
+    timeoutSeconds: 1
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 3
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}

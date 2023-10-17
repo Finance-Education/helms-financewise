@@ -1,0 +1,144 @@
+{{- if .Values.FinanceWiseServices.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.FinanceWiseServices.name }}
+  namespace: {{ .Values.global.namespace }}
+  {{- if .Values.global.monitoring.datadog.enabled }}
+  labels:
+    tags.datadoghq.com/env: "{{ .Values.global.monitoring.datadog.env }}"
+    tags.datadoghq.com/service: "{{ .Values.FinanceWiseServices.name }}"
+    tags.datadoghq.com/version: "{{ .Values.FinanceWiseServices.image.tag }}"
+  {{- end}}
+spec:
+  replicas: {{ .Values.FinanceWiseServices.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.FinanceWiseServices.name | quote }}
+  strategy:
+    type: {{ .Values.FinanceWiseServices.updateStrategy }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.FinanceWiseServices.name | quote }}
+      {{- if .Values.global.monitoring.datadog.enabled }}
+        tags.datadoghq.com/env: "{{ .Values.global.monitoring.datadog.env }}"
+        tags.datadoghq.com/service: "{{ .Values.FinanceWiseServices.name }}"
+        tags.datadoghq.com/version: "{{ .Values.FinanceWiseServices.image.tag }}"
+      {{- end}}
+    spec:
+      containers:
+      - name: {{ .Values.FinanceWiseServices.name | quote }}
+        image: {{ .Values.FinanceWiseServices.image.repository }}/{{ .Values.FinanceWiseServices.image.name }}:{{ .Values.FinanceWiseServices.image.tag }}
+        imagePullPolicy: {{ .Values.FinanceWiseServices.image.pullPolicy }}
+
+        env:
+        {{- with .Values.FinanceWiseServices.env }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+
+        # DATADOG ENV'S
+        {{- if .Values.global.monitoring.datadog.enabled }}
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DD_ENV
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/env']
+        - name: DD_SERVICE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/service']
+        - name: DD_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/version']
+        - name: DD_LOGS_INJECTION
+          value: "true"
+        - name: DD_TRACE_SAMPLE_RATE
+          value: "1"
+        - name: DD_PROFILING_ENABLED
+          value: "false"
+        - name: DD_TAGS
+          value: "tennant:{{ .Values.global.monitoring.datadog.tennant}}"
+        - name: DD_TRACE_DEBUG
+          value: "{{ .Values.global.monitoring.datadog.debug }}"
+        {{- end}}
+
+        command:
+          - /bin/sh
+        args:
+          - '-c'
+          - yarn start
+
+        ports:
+        - containerPort: {{ .Values.FinanceWiseServices.apiPort }}
+          protocol: TCP
+
+        {{- with .Values.FinanceWiseServices.resources }}
+        resources:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+
+        {{- with .Values.FinanceWiseServices.readinessProbe }}
+        readinessProbe:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+
+        {{- with .Values.FinanceWiseServices.livenessProbe }}
+        livenessProbe:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+
+        volumeMounts:
+          - name: config
+            readOnly: true
+            mountPath: /config/config.json
+            subPath: config.json
+
+      {{- with .Values.FinanceWiseServices.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+
+      {{- with .Values.FinanceWiseServices.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+
+      {{- with .Values.FinanceWiseServices.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+
+      dnsConfig:
+        options:
+          - name: ndots
+            value: '1'
+      dnsPolicy: ClusterFirst
+
+      restartPolicy: Always
+
+      schedulerName: default-scheduler
+
+      volumes:
+      - name: config
+        configMap:
+          name: {{ .Values.FinanceWiseServices.name }}
+          items:
+            - key: config.json
+              path: config.json
+          defaultMode: 420
+
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+status: {}
+{{- end}}

@@ -1,0 +1,10 @@
+apiVersion: v1
+appVersion: 0.1.0
+description: carreiramais-core
+keywords:
+- carreiramais
+maintainers:
+- email: infra@carreiramais.app.br
+  name: carreiramais-core
+name: carreiramais-core
+version: 0.1.0

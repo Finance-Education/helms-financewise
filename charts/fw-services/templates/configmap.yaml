@@ -1,0 +1,17 @@
+{{- if .Values.FinanceWiseServices.enabled }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.FinanceWiseServices.name }}
+  namespace: {{ .Values.global.namespace }}
+data:
+  config.json: |
+    {
+      "featureApi": {
+        "baseUri": "/rewards-core/v1",
+        "autoDiscoveryFeatures": true,
+        "routes": []
+      }
+    }
+
+{{- end}}

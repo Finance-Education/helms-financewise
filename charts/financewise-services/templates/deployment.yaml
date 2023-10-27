@@ -19,6 +19,9 @@ spec:
     type: {{ .Values.FinanceWiseServices.updateStrategy }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+    metadata:
       labels:
         app: {{ .Values.FinanceWiseServices.name | quote }}
       {{- if .Values.global.monitoring.datadog.enabled }}
@@ -98,8 +101,8 @@ spec:
         volumeMounts:
           - name: config
             readOnly: true
-            mountPath: /config/config.json
-            subPath: config.json
+            mountPath: /app/src/gateway/plugins/plugin-profiles.json
+            subPath: plugin-profiles.json
 
       {{- with .Values.FinanceWiseServices.nodeSelector }}
       nodeSelector:
@@ -131,8 +134,8 @@ spec:
         configMap:
           name: {{ .Values.FinanceWiseServices.name }}
           items:
-            - key: config.json
-              path: config.json
+            - key: plugin-profiles.json
+              path: plugin-profiles.json
           defaultMode: 420
 
       {{- with .Values.global.imagePullSecrets }}

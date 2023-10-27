@@ -5,13 +5,26 @@ metadata:
   name: {{ .Values.FinanceWiseServices.name }}
   namespace: {{ .Values.global.namespace }}
 data:
-  config.json: |
+  plugin-profiles.json: |
     {
-      "featureApi": {
-        "baseUri": "/rewards-core/v1",
-        "autoDiscoveryFeatures": true,
-        "routes": []
-      }
+        "fwise-oidc":{
+    
+            "oauth2":{
+                "version": 1,
+                "discovery_url": "{{ .Values.FinanceWiseServices.keycloak.well_known_url }}",
+                "client_id": "{{ .Values.FinanceWiseServices.keycloak.client_id }}",
+                "client_secret": "{{ .Values.FinanceWiseServices.keycloak.client_secret }}"
+            },
+    
+            "copyTokenClaims":{
+                "version": 1,
+                "fields":[
+                    {"from":"clientId", "to":"tenantId"},
+                    {"from":"cpf", "to":"cpf"}
+                ]
+            }
+    
+        }
     }
 
 {{- end}}

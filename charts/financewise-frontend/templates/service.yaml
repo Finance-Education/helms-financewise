@@ -1,0 +1,18 @@
+{{- if .Values.FinanceWiseFrontend.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .Values.FinanceWiseFrontend.name }}
+  name: {{ .Values.FinanceWiseFrontend.name | quote }}
+  namespace: {{ .Values.global.namespace | quote }}
+spec:
+  ports:
+    - name: api
+      protocol: TCP
+      port: {{ .Values.FinanceWiseFrontend.apiPort }}
+      targetPort: {{ .Values.FinanceWiseFrontend.apiPort }}
+  selector:
+    app: {{ .Values.FinanceWiseFrontend.name | quote }}
+
+{{- end }}

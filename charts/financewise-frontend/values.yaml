@@ -1,0 +1,100 @@
+autoscaling:
+  enabled: false
+  minReplicas: 3
+  maxReplicas: 10
+  ## targetCPUUtilizationPercentage only used if the cluster doesn't support autoscaling/v2beta
+  targetCPUUtilizationPercentage:
+  ## Otherwise for clusters that do support autoscaling/v2beta, use metrics
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
+
+global:
+  clusterDomain: cluster.local
+  updateStrategy: "RollingUpdate"
+  editor: "FinanceWise"
+  namespace: "financewise"
+  domainName: "dev.example.com"
+  pullPolicy: Always
+  imagePullSecrets:
+  - name: regsecret
+
+  monitoring:
+    datadog:
+      enabled: false
+      env: env_name
+      tennant: client_name
+      debug: false
+
+###################
+FinanceWiseFrontend:
+  enabled: true
+  name: fw-services
+  updateStrategy: "RollingUpdate"
+  image:
+    repository: fwinternal.azurecr.io
+    name: fw-frontend
+    tag: d82318261873d2660d7c78a1c93b37707914d511
+    pullPolicy: Always
+
+  replicaCount: 1
+
+  apiPort: 80
+
+  env: {}
+#    - name: DUMMY
+#      value: my-value
+
+  ingress:
+    enabled: false
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/affinity: "cookie"
+    hosts:
+      - host: fwfront.dev.example.com
+        paths:
+          - /
+    tls:
+     - secretName: fwfront.dev.example.com
+       hosts:
+         - fwfront.dev.example.com
+
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 5000Mi
+    limits:
+      cpu: 3000m
+      memory: 1000Mi
+
+  readinessProbe:
+    tcpSocket:
+      port: 80
+    initialDelaySeconds: 60
+    timeoutSeconds: 1
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 5
+
+  livenessProbe:
+    tcpSocket:
+      port: 80
+    initialDelaySeconds: 60
+    timeoutSeconds: 1
+    periodSeconds: 10
+    successThreshold: 1
+    failureThreshold: 3
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}

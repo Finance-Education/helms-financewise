@@ -1,3 +1,4 @@
+#
 autoscaling:
   enabled: false
   minReplicas: 3

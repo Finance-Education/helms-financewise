@@ -19,6 +19,9 @@ spec:
     type: {{ .Values.FinanceWiseServices.updateStrategy }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+    metadata:
       labels:
         app: {{ .Values.FinanceWiseServices.name | quote }}
       {{- if .Values.global.monitoring.datadog.enabled }}

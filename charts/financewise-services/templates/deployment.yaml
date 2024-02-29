@@ -98,11 +98,6 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
 
-        volumeMounts:
-          - name: config
-            readOnly: true
-            mountPath: /app/src/gateway/plugins/plugin-profiles.json
-            subPath: plugin-profiles.json
 
       {{- with .Values.FinanceWiseServices.nodeSelector }}
       nodeSelector:
@@ -128,15 +123,6 @@ spec:
       restartPolicy: Always
 
       schedulerName: default-scheduler
-
-      volumes:
-      - name: config
-        configMap:
-          name: {{ .Values.FinanceWiseServices.name }}
-          items:
-            - key: plugin-profiles.json
-              path: plugin-profiles.json
-          defaultMode: 420
 
       {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:

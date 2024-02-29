@@ -19,6 +19,8 @@ spec:
     type: {{ .Values.FinanceWiseServices.updateStrategy }}
   template:
     metadata:
+      annotations:
+    metadata:
       labels:
         app: {{ .Values.FinanceWiseServices.name | quote }}
       {{- if .Values.global.monitoring.datadog.enabled }}

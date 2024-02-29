@@ -46,11 +46,6 @@ FinanceWiseServices:
 
   apiPort: 3000
 
-  keycloak:
-    well-known-url: http://localhost:8080/auth/realms/fwise/.well-known/openid-configuration
-    client_id: "gateway-services"
-    client_secret: "38cf221d-0e28-41f5-a54d-5699d3c75f6d"
-
   env:
     - name: DB_URI
       value: mongodb://user:pass@localhost:27017/fw-services?authSource=admin&readPreference=nearest&w=majority&replicaSet=rs0

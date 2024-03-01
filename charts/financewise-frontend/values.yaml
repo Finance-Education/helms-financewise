@@ -44,7 +44,7 @@ FinanceWiseFrontend:
 
   replicaCount: 1
 
-  apiPort: 80
+  apiPort: 9090
 
   env:
     - name: WEBSERVER_LISTEN_PORT

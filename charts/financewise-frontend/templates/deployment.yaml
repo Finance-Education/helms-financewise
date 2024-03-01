@@ -73,7 +73,7 @@ spec:
           - /bin/sh
         args:
           - '-c'
-          - node index,js
+          - node index.js
 
         ports:
         - containerPort: {{ .Values.FinanceWiseFrontend.apiPort }}

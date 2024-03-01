@@ -46,9 +46,38 @@ FinanceWiseFrontend:
 
   apiPort: 80
 
-  env: {}
-#    - name: DUMMY
-#      value: my-value
+  env:
+    - name: WEBSERVER_LISTEN_PORT
+      value: 9090
+    - name: WEBSERVER_APP_ROOT_PATH
+      value: /app
+    - name: WEBSERVER_APP_CONTEXT_PATH
+      value: /
+    - name: WEBSERVER_APP_HOME_PAGE_PATH
+      value: /app/index.html
+    - name: WEBSERVER_APP_ERROR_PAGE_PATH
+      value: /app/error.html
+    - name: WEBSERVER_SECURITY_PUBLIC_PATHS
+      value: /public
+    - name: WEBSERVER_SECURITY_ENABLED
+      value: true
+    - name: WEBSERVER_SECURITY_PROTECTED_PATHS
+      value: /**
+    - name: WEBSERVER_SECURITY_PUBLIC_PATHS
+      value: /public
+    - name: WEBSERVER_SECURITY_OIDC_DISCOVERY_URL
+      value: http://localhost:8080/realms/fwise/.well-known/openid-configuration
+    - name: WEBSERVER_SECURITY_OAUTH2_REDIRECT_URI
+      value: http://localhost:9090/public/login/callback
+    - name: WEBSERVER_SECURITY_OAUTH2_POST_LOGOUT_REDIRECT_URI
+      value: http://localhost:9090/logout/callback
+    - name: WEBSERVER_SECURITY_OAUTH2_CLIENT_ID
+      value: webapp
+    - name: WEBSERVER_SECURITY_OAUTH2_CLIENT_SECRET
+      value: xxxxxxxxXXXXXXXXXXXXXxxxxxxxxxxxx
+    - name: PROXY_API_HOST
+      value: http://localhost:3000
+
 
   ingress:
     enabled: false

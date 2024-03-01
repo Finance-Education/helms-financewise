@@ -70,8 +70,10 @@ spec:
         {{- end}}
 
         command:
-          - /usr/sbin/nginx
+          - /bin/sh
         args:
+          - '-c'
+          - node index,js
 
         ports:
         - containerPort: {{ .Values.FinanceWiseFrontend.apiPort }}

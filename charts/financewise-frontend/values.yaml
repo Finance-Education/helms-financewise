@@ -39,12 +39,12 @@ FinanceWiseFrontend:
   image:
     repository: fwinternal.azurecr.io
     name: fw-frontend
-    tag: d82318261873d2660d7c78a1c93b37707914d511
+    tag: 2517e61b4ecd46e008529702b3ce82c047331afd
     pullPolicy: Always
 
   replicaCount: 1
 
-  apiPort: 9090
+  apiPort: 9000
 
   env:
     - name: WEBSERVER_LISTEN_PORT

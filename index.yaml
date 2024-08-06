@@ -16,6 +16,20 @@ entries:
     - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-frontend-0.1.2/financewise-frontend-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v1
+    appVersion: 0.1.2-5
+    created: "2024-08-06T02:27:47.492950719Z"
+    description: financewise-frontend
+    digest: 8c472e264a182762f5aaea7e6198b9b7515ac0270a963e4a3758d6bf2d4b8a32
+    keywords:
+    - financewise
+    maintainers:
+    - email: infra@financewise.app.br
+      name: financewise-frontend
+    name: financewise-frontend
+    urls:
+    - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-frontend-0.1.2-5/financewise-frontend-0.1.2-5.tgz
+    version: 0.1.2-5
+  - apiVersion: v1
     appVersion: 0.1.2-4
     created: "2024-08-05T23:05:47.4055637Z"
     description: financewise-frontend
@@ -198,4 +212,4 @@ entries:
     urls:
     - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-services-0.1.1/financewise-services-0.1.1.tgz
     version: 0.1.1
-generated: "2024-08-05T23:05:47.405626768Z"
+generated: "2024-08-06T02:27:47.493037301Z"

@@ -1,5 +1,20 @@
 apiVersion: v1
 entries:
+  financewise-admin-portal:
+  - apiVersion: v1
+    appVersion: 0.1.0
+    created: "2024-11-04T16:50:54.616231904Z"
+    description: financewise-admin-portal
+    digest: 88ca3ca4f5e434c2a101bbb2e3dddbf3ba636faf2c6c0be054184110b3d40927
+    keywords:
+    - financewise
+    maintainers:
+    - email: infra@financewise.app.br
+      name: financewise-frontend
+    name: financewise-admin-portal
+    urls:
+    - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-admin-portal-0.1.0/financewise-admin-portal-0.1.0.tgz
+    version: 0.1.0
   financewise-frontend:
   - apiVersion: v1
     appVersion: 0.1.2
@@ -255,4 +270,4 @@ entries:
     urls:
     - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-services-0.1.1/financewise-services-0.1.1.tgz
     version: 0.1.1
-generated: "2024-11-04T12:19:05.72937538Z"
+generated: "2024-11-04T16:50:54.616281417Z"

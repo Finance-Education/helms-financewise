@@ -127,6 +127,21 @@ entries:
     urls:
     - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-frontend-0.1.0/financewise-frontend-0.1.0.tgz
     version: 0.1.0
+  financewise-onboard-app:
+  - apiVersion: v1
+    appVersion: 0.1.0
+    created: "2024-11-04T11:33:02.83051103Z"
+    description: financewise-onboard-app
+    digest: 3f276067a54e4920f86778899894e986c9e8aaaefe191c1cdf1b06f9c084e119
+    keywords:
+    - financewise
+    maintainers:
+    - email: infra@financewise.app.br
+      name: financewise-frontend
+    name: financewise-onboard-app
+    urls:
+    - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-onboard-app-0.1.0/financewise-onboard-app-0.1.0.tgz
+    version: 0.1.0
   financewise-services:
   - apiVersion: v1
     appVersion: 0.1.3
@@ -226,4 +241,4 @@ entries:
     urls:
     - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-services-0.1.1/financewise-services-0.1.1.tgz
     version: 0.1.1
-generated: "2024-08-06T02:33:30.949925839Z"
+generated: "2024-11-04T11:33:02.830552166Z"

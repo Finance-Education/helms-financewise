@@ -1,0 +1,18 @@
+{{- if .Values.AdminPortal.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ .Values.AdminPortal.name }}
+  name: {{ .Values.AdminPortal.name | quote }}
+  namespace: {{ .Values.global.namespace | quote }}
+spec:
+  ports:
+    - name: api
+      protocol: TCP
+      port: {{ .Values.AdminPortal.apiPort }}
+      targetPort: {{ .Values.AdminPortal.apiPort }}
+  selector:
+    app: {{ .Values.AdminPortal.name | quote }}
+
+{{- end }}

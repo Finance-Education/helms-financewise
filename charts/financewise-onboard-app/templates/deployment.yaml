@@ -1,0 +1,132 @@
+{{- if .Values.OnBoardApp.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.OnBoardApp.name }}
+  namespace: {{ .Values.global.namespace }}
+  {{- if .Values.global.monitoring.datadog.enabled }}
+  labels:
+    tags.datadoghq.com/env: "{{ .Values.global.monitoring.datadog.env }}"
+    tags.datadoghq.com/service: "{{ .Values.OnBoardApp.name }}"
+    tags.datadoghq.com/version: "{{ .Values.OnBoardApp.image.tag }}"
+  {{- end}}
+spec:
+  replicas: {{ .Values.OnBoardApp.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.OnBoardApp.name | quote }}
+  strategy:
+    type: {{ .Values.OnBoardApp.updateStrategy }}
+  template:
+    metadata:
+      annotations:
+    metadata:
+      labels:
+        app: {{ .Values.OnBoardApp.name | quote }}
+      {{- if .Values.global.monitoring.datadog.enabled }}
+        tags.datadoghq.com/env: "{{ .Values.global.monitoring.datadog.env }}"
+        tags.datadoghq.com/service: "{{ .Values.OnBoardApp.name }}"
+        tags.datadoghq.com/version: "{{ .Values.OnBoardApp.image.tag }}"
+      {{- end}}
+    spec:
+      containers:
+      - name: {{ .Values.OnBoardApp.name | quote }}
+        image: {{ .Values.OnBoardApp.image.repository }}/{{ .Values.OnBoardApp.image.name }}:{{ .Values.OnBoardApp.image.tag }}
+        imagePullPolicy: {{ .Values.OnBoardApp.image.pullPolicy }}
+
+        env:
+        {{- with .Values.OnBoardApp.env }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+
+        # DATADOG ENV'S
+        {{- if .Values.global.monitoring.datadog.enabled }}
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DD_ENV
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/env']
+        - name: DD_SERVICE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/service']
+        - name: DD_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['tags.datadoghq.com/version']
+        - name: DD_LOGS_INJECTION
+          value: "true"
+        - name: DD_TRACE_SAMPLE_RATE
+          value: "1"
+        - name: DD_PROFILING_ENABLED
+          value: "false"
+        - name: DD_TAGS
+          value: "tennant:{{ .Values.global.monitoring.datadog.tennant}}"
+        - name: DD_TRACE_DEBUG
+          value: "{{ .Values.global.monitoring.datadog.debug }}"
+        {{- end}}
+
+        command:
+          - /bin/sh
+        args:
+          - '-c'
+          - node ./server/index.js
+
+        ports:
+        - containerPort: {{ .Values.OnBoardApp.apiPort }}
+          protocol: TCP
+
+        {{- with .Values.OnBoardApp.resources }}
+        resources:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+
+        {{- with .Values.OnBoardApp.readinessProbe }}
+        readinessProbe:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+
+        {{- with .Values.OnBoardApp.livenessProbe }}
+        livenessProbe:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+
+      {{- with .Values.OnBoardApp.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+
+      {{- with .Values.OnBoardApp.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+
+      {{- with .Values.OnBoardApp.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+
+      dnsConfig:
+        options:
+          - name: ndots
+            value: '1'
+      dnsPolicy: ClusterFirst
+
+      restartPolicy: Always
+
+      schedulerName: default-scheduler
+
+
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+status: {}
+{{- end}}

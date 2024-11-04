@@ -1,0 +1,43 @@
+{{- if .Values.OnBoardApp.ingress.enabled -}}
+{{- $fullName := .Values.OnBoardApp.name -}}
+{{- $svcPort := .Values.OnBoardApp.apiPort -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+
+metadata:
+  name: {{ .Values.OnBoardApp.name }}
+  {{- with .Values.OnBoardApp.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+{{- if .Values.OnBoardApp.ingress.tls }}
+  tls:
+  {{- range .Values.OnBoardApp.ingress.tls }}
+    - hosts:
+      {{- range .hosts }}
+        - {{ . | quote }}
+      {{- end }}
+      secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}
+  rules:
+  {{- range .Values.OnBoardApp.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+        - pathType: Prefix
+          {{- range .paths }}
+          path: {{ . }}
+          backend:
+            service:
+              name: {{ $fullName }}
+              port:
+                number: {{ $svcPort }}
+          {{- end }}
+  {{- end }}
+{{- end }}

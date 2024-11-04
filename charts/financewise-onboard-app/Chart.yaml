@@ -1,0 +1,10 @@
+apiVersion: v1
+appVersion: 0.1.0
+description: financewise-onboard-app
+keywords:
+- financewise
+maintainers:
+- email: infra@financewise.app.br
+  name: financewise-frontend
+name: financewise-onboard-app
+version: 0.1.0

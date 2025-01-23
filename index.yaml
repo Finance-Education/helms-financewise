@@ -258,6 +258,20 @@ entries:
     - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-services-0.1.3-4/financewise-services-0.1.3-4.tgz
     version: 0.1.3-4
   - apiVersion: v1
+    appVersion: 0.1.3-4
+    created: "2025-01-23T21:18:06.409391946Z"
+    description: financewise-services
+    digest: 061197c80e1f27e889563b4783c26c8d37c2211f3480b8dc00652aefc2d6f0ff
+    keywords:
+    - financewise
+    maintainers:
+    - email: infra@financewise.app.br
+      name: financewise-services
+    name: financewise-services
+    urls:
+    - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-services-0.1.3-4/financewise-services-0.1.3-4.tgz
+    version: 0.1.3-4
+  - apiVersion: v1
     appVersion: 0.1.3-3
     created: "2024-02-29T22:38:39.949536436Z"
     description: financewise-services
@@ -327,4 +341,19 @@ entries:
     urls:
     - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-services-0.1.1/financewise-services-0.1.1.tgz
     version: 0.1.1
-generated: "2025-01-23T20:36:29.070864003Z"
+  financewise-whatsapp-api:
+  - apiVersion: v1
+    appVersion: 0.1.0
+    created: "2025-01-23T21:18:06.557950664Z"
+    description: financewise-whatsapp-api
+    digest: 0a465da3be1d619a3d4cc7027cd11a68bf90c2aba1e09a4a9a53f3fdefcf7e95
+    keywords:
+    - financewise
+    maintainers:
+    - email: infra@financewise.app.br
+      name: financewise-whatsapp-api
+    name: financewise-whatsapp-api
+    urls:
+    - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-whatsapp-api-0.1.0/financewise-whatsapp-api-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-01-23T21:18:06.558030583Z"

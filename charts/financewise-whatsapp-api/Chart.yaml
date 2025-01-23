@@ -1,0 +1,10 @@
+apiVersion: v1
+appVersion: 0.1.0
+description: financewise-whatsapp-api
+keywords:
+- financewise
+maintainers:
+- email: infra@financewise.app.br
+  name: financewise-whatsapp-api
+name: financewise-whatsapp-api
+version: 0.1.0

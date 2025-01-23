@@ -32,25 +32,29 @@ global:
       debug: false
 
 ###################
-FinanceWiseServices:
+FinanceWiseDataAggregatorServices:
   enabled: true
-  name: fw-services
+  name: fw-data-aggregator-services
   updateStrategy: "RollingUpdate"
   image:
     repository: fwinternal.azurecr.io
-    name: fw-services
+    name: fw-data-aggregator
     tag: 7b15ade75ebe1c4d302bcccb69e5324158d7bf18
     pullPolicy: Always
 
   replicaCount: 1
 
-  apiPort: 3000
+  apiPort: 8000
 
   env:
-    - name: DB_URI
-      value: mongodb://user:pass@localhost:27017/fw-services?authSource=admin&readPreference=nearest&w=majority&replicaSet=rs0
-    - name: CHANNELS_URI
-      value: redis://localhost:6379
+    - name: MONGODB_URL
+      value: mongodb://user:pass@localhost:27017/?authSource=admin&readPreference=nearest&w=majority&replicaSet=rs0
+    - name: SERVER_URL
+      value: https://api.v3.example.com
+    - name: CLIENT_ID
+      value: XXXXXXXXXXXXXXXXXXX
+    - name: CLIENT_SECRET
+      value: YYYYYYYYYYYYYYYYYYY
 
   ingress:
     enabled: false
@@ -61,13 +65,13 @@ FinanceWiseServices:
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
       nginx.ingress.kubernetes.io/affinity: "cookie"
     hosts:
-      - host: fwservices.dev.example.com
+      - host: data-aggregator.dev.example.com
         paths:
           - /
     tls:
-     - secretName: fwservices.dev.example.com
+     - secretName: data-aggregator.dev.example.com
        hosts:
-         - fwservices.dev.example.com
+         - data-aggregator.dev.example.com
 
 
   resources:
@@ -80,7 +84,7 @@ FinanceWiseServices:
 
   readinessProbe:
     tcpSocket:
-      port: 3000
+      port: 8000
     initialDelaySeconds: 60
     timeoutSeconds: 1
     periodSeconds: 10
@@ -89,7 +93,7 @@ FinanceWiseServices:
 
   livenessProbe:
     tcpSocket:
-      port: 3000
+      port: 8000
     initialDelaySeconds: 60
     timeoutSeconds: 1
     periodSeconds: 10

@@ -1,39 +1,39 @@
-{{- if .Values.FinanceWiseDataAggregatorServices.enabled }}
+{{- if .Values.FinanceWhatsappApi.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.FinanceWiseDataAggregatorServices.name }}
+  name: {{ .Values.FinanceWhatsappApi.name }}
   namespace: {{ .Values.global.namespace }}
   {{- if .Values.global.monitoring.datadog.enabled }}
   labels:
     tags.datadoghq.com/env: "{{ .Values.global.monitoring.datadog.env }}"
-    tags.datadoghq.com/service: "{{ .Values.FinanceWiseDataAggregatorServices.name }}"
-    tags.datadoghq.com/version: "{{ .Values.FinanceWiseDataAggregatorServices.image.tag }}"
+    tags.datadoghq.com/service: "{{ .Values.FinanceWhatsappApi.name }}"
+    tags.datadoghq.com/version: "{{ .Values.FinanceWhatsappApi.image.tag }}"
   {{- end}}
 spec:
-  replicas: {{ .Values.FinanceWiseDataAggregatorServices.replicaCount }}
+  replicas: {{ .Values.FinanceWhatsappApi.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.FinanceWiseDataAggregatorServices.name | quote }}
+      app: {{ .Values.FinanceWhatsappApi.name | quote }}
   strategy:
-    type: {{ .Values.FinanceWiseDataAggregatorServices.updateStrategy }}
+    type: {{ .Values.FinanceWhatsappApi.updateStrategy }}
   template:
     metadata:
       labels:
-        app: {{ .Values.FinanceWiseDataAggregatorServices.name | quote }}
+        app: {{ .Values.FinanceWhatsappApi.name | quote }}
       {{- if .Values.global.monitoring.datadog.enabled }}
         tags.datadoghq.com/env: "{{ .Values.global.monitoring.datadog.env }}"
-        tags.datadoghq.com/service: "{{ .Values.FinanceWiseDataAggregatorServices.name }}"
-        tags.datadoghq.com/version: "{{ .Values.FinanceWiseDataAggregatorServices.image.tag }}"
+        tags.datadoghq.com/service: "{{ .Values.FinanceWhatsappApi.name }}"
+        tags.datadoghq.com/version: "{{ .Values.FinanceWhatsappApi.image.tag }}"
       {{- end}}
     spec:
       containers:
-      - name: {{ .Values.FinanceWiseDataAggregatorServices.name | quote }}
-        image: {{ .Values.FinanceWiseDataAggregatorServices.image.repository }}/{{ .Values.FinanceWiseDataAggregatorServices.image.name }}:{{ .Values.FinanceWiseDataAggregatorServices.image.tag }}
-        imagePullPolicy: {{ .Values.FinanceWiseDataAggregatorServices.image.pullPolicy }}
+      - name: {{ .Values.FinanceWhatsappApi.name | quote }}
+        image: {{ .Values.FinanceWhatsappApi.image.repository }}/{{ .Values.FinanceWhatsappApi.image.name }}:{{ .Values.FinanceWhatsappApi.image.tag }}
+        imagePullPolicy: {{ .Values.FinanceWhatsappApi.image.pullPolicy }}
 
         env:
-        {{- with .Values.FinanceWiseDataAggregatorServices.env }}
+        {{- with .Values.FinanceWhatsappApi.env }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
 
@@ -71,23 +71,23 @@ spec:
           - /bin/sh
         args:
           - '-c'
-          - poetry run uvicorn --host 0.0.0.0 data_aggregator_microservices.app:app
+          - npm start
 
         ports:
-        - containerPort: {{ .Values.FinanceWiseDataAggregatorServices.apiPort }}
+        - containerPort: {{ .Values.FinanceWhatsappApi.apiPort }}
           protocol: TCP
 
-        {{- with .Values.FinanceWiseDataAggregatorServices.resources }}
+        {{- with .Values.FinanceWhatsappApi.resources }}
         resources:
           {{- toYaml . | nindent 12 }}
         {{- end }}
 
-        {{- with .Values.FinanceWiseDataAggregatorServices.readinessProbe }}
+        {{- with .Values.FinanceWhatsappApi.readinessProbe }}
         readinessProbe:
           {{- toYaml . | nindent 12 }}
         {{- end }}
 
-        {{- with .Values.FinanceWiseDataAggregatorServices.livenessProbe }}
+        {{- with .Values.FinanceWhatsappApi.livenessProbe }}
         livenessProbe:
           {{- toYaml . | nindent 12 }}
         {{- end }}
@@ -96,17 +96,17 @@ spec:
         terminationMessagePolicy: File
 
 
-      {{- with .Values.FinanceWiseDataAggregatorServices.nodeSelector }}
+      {{- with .Values.FinanceWhatsappApi.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
         {{- end }}
 
-      {{- with .Values.FinanceWiseDataAggregatorServices.affinity }}
+      {{- with .Values.FinanceWhatsappApi.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
         {{- end }}
 
-      {{- with .Values.FinanceWiseDataAggregatorServices.tolerations }}
+      {{- with .Values.FinanceWhatsappApi.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
         {{- end }}

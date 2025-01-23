@@ -1,18 +1,18 @@
-{{- if .Values.FinanceWiseDataAggregatorServices.enabled }}
+{{- if .Values.FinanceWiseServices.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: {{ .Values.FinanceWiseDataAggregatorServices.name }}
-  name: {{ .Values.FinanceWiseDataAggregatorServices.name | quote }}
+    app: {{ .Values.FinanceWiseServices.name }}
+  name: {{ .Values.FinanceWiseServices.name | quote }}
   namespace: {{ .Values.global.namespace | quote }}
 spec:
   ports:
     - name: api
       protocol: TCP
-      port: {{ .Values.FinanceWiseDataAggregatorServices.apiPort }}
-      targetPort: {{ .Values.FinanceWiseDataAggregatorServices.apiPort }}
+      port: {{ .Values.FinanceWiseServices.apiPort }}
+      targetPort: {{ .Values.FinanceWiseServices.apiPort }}
   selector:
-    app: {{ .Values.FinanceWiseDataAggregatorServices.name | quote }}
+    app: {{ .Values.FinanceWiseServices.name | quote }}
 
 {{- end }}

@@ -1,6 +1,6 @@
-{{- if .Values.FinanceWiseServices.ingress.enabled -}}
-{{- $fullName := .Values.FinanceWiseServices.name -}}
-{{- $svcPort := .Values.FinanceWiseServices.apiPort -}}
+{{- if .Values.FinanceWiseDataAggregatorServices.ingress.enabled -}}
+{{- $fullName := .Values.FinanceWiseDataAggregatorServices.name -}}
+{{- $svcPort := .Values.FinanceWiseDataAggregatorServices.apiPort -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
 {{- else -}}
@@ -9,15 +9,15 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 
 metadata:
-  name: {{ .Values.FinanceWiseServices.name }}
-  {{- with .Values.FinanceWiseServices.ingress.annotations }}
+  name: {{ .Values.FinanceWiseDataAggregatorServices.name }}
+  {{- with .Values.FinanceWiseDataAggregatorServices.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-{{- if .Values.FinanceWiseServices.ingress.tls }}
+{{- if .Values.FinanceWiseDataAggregatorServices.ingress.tls }}
   tls:
-  {{- range .Values.FinanceWiseServices.ingress.tls }}
+  {{- range .Values.FinanceWiseDataAggregatorServices.ingress.tls }}
     - hosts:
       {{- range .hosts }}
         - {{ . | quote }}
@@ -26,7 +26,7 @@ spec:
   {{- end }}
 {{- end }}
   rules:
-  {{- range .Values.FinanceWiseServices.ingress.hosts }}
+  {{- range .Values.FinanceWiseDataAggregatorServices.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:

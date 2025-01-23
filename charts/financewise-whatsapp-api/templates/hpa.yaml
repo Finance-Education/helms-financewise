@@ -1,16 +1,16 @@
-{{- if .Values.FinanceWiseServices.enabled }}
+{{- if .Values.FinanceWhatsappApi.enabled }}
 {{- if .Values.autoscaling.enabled }}
 apiVersion: {{ .Capabilities.APIVersions.Has "autoscaling/v2beta2" | ternary "autoscaling/v2beta2" "autoscaling/v1" }}
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ .Values.FinanceWiseServices.name }}
+  name: {{ .Values.FinanceWhatsappApi.name }}
   namespace: {{ .Values.global.namespace }}
   labels:
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ .Values.FinanceWiseServices.name }}
+    name: {{ .Values.FinanceWhatsappApi.name }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   {{- if not (.Capabilities.APIVersions.Has "autoscaling/v2beta2") }}

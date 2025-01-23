@@ -32,29 +32,25 @@ global:
       debug: false
 
 ###################
-FinanceWiseDataAggregatorServices:
+FinanceWiseServices:
   enabled: true
-  name: fw-data-aggregator-services
+  name: fw-services
   updateStrategy: "RollingUpdate"
   image:
     repository: fwinternal.azurecr.io
-    name: fw-data-aggregator
+    name: fw-services
     tag: 7b15ade75ebe1c4d302bcccb69e5324158d7bf18
     pullPolicy: Always
 
   replicaCount: 1
 
-  apiPort: 8000
+  apiPort: 3000
 
   env:
-    - name: MONGODB_URL
-      value: mongodb://user:pass@localhost:27017/?authSource=admin&readPreference=nearest&w=majority&replicaSet=rs0
-    - name: SERVER_URL
-      value: https://api.v3.example.com
-    - name: CLIENT_ID
-      value: XXXXXXXXXXXXXXXXXXX
-    - name: CLIENT_SECRET
-      value: YYYYYYYYYYYYYYYYYYY
+    - name: DB_URI
+      value: mongodb://user:pass@localhost:27017/fw-services?authSource=admin&readPreference=nearest&w=majority&replicaSet=rs0
+    - name: CHANNELS_URI
+      value: redis://localhost:6379
 
   ingress:
     enabled: false
@@ -65,13 +61,13 @@ FinanceWiseDataAggregatorServices:
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
       nginx.ingress.kubernetes.io/affinity: "cookie"
     hosts:
-      - host: data-aggregator.dev.example.com
+      - host: fwservices.dev.example.com
         paths:
           - /
     tls:
-     - secretName: data-aggregator.dev.example.com
+     - secretName: fwservices.dev.example.com
        hosts:
-         - data-aggregator.dev.example.com
+         - fwservices.dev.example.com
 
 
   resources:

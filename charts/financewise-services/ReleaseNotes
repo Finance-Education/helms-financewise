@@ -1,15 +1,3 @@
-2024-02-29 --- 0.1.3
-------------------------
-Removed configmap + removed sha annotation (auto rollout)
-
-2024-02-29 --- 0.1.2
-------------------------
-Removed configmap
-
-2023-10-27 --- 0.1.1
-------------------------
-Added keycloak vars and configmap.yaml
-
-2023-08-11 --- 0.1.0
+2025-01-23 --- 0.1.0
 ------------------------
 First Release

@@ -1,39 +1,39 @@
-{{- if .Values.FinanceWiseDataAggregatorServices.enabled }}
+{{- if .Values.FinanceWiseServices.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.FinanceWiseDataAggregatorServices.name }}
+  name: {{ .Values.FinanceWiseServices.name }}
   namespace: {{ .Values.global.namespace }}
   {{- if .Values.global.monitoring.datadog.enabled }}
   labels:
     tags.datadoghq.com/env: "{{ .Values.global.monitoring.datadog.env }}"
-    tags.datadoghq.com/service: "{{ .Values.FinanceWiseDataAggregatorServices.name }}"
-    tags.datadoghq.com/version: "{{ .Values.FinanceWiseDataAggregatorServices.image.tag }}"
+    tags.datadoghq.com/service: "{{ .Values.FinanceWiseServices.name }}"
+    tags.datadoghq.com/version: "{{ .Values.FinanceWiseServices.image.tag }}"
   {{- end}}
 spec:
-  replicas: {{ .Values.FinanceWiseDataAggregatorServices.replicaCount }}
+  replicas: {{ .Values.FinanceWiseServices.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.FinanceWiseDataAggregatorServices.name | quote }}
+      app: {{ .Values.FinanceWiseServices.name | quote }}
   strategy:
-    type: {{ .Values.FinanceWiseDataAggregatorServices.updateStrategy }}
+    type: {{ .Values.FinanceWiseServices.updateStrategy }}
   template:
     metadata:
       labels:
-        app: {{ .Values.FinanceWiseDataAggregatorServices.name | quote }}
+        app: {{ .Values.FinanceWiseServices.name | quote }}
       {{- if .Values.global.monitoring.datadog.enabled }}
         tags.datadoghq.com/env: "{{ .Values.global.monitoring.datadog.env }}"
-        tags.datadoghq.com/service: "{{ .Values.FinanceWiseDataAggregatorServices.name }}"
-        tags.datadoghq.com/version: "{{ .Values.FinanceWiseDataAggregatorServices.image.tag }}"
+        tags.datadoghq.com/service: "{{ .Values.FinanceWiseServices.name }}"
+        tags.datadoghq.com/version: "{{ .Values.FinanceWiseServices.image.tag }}"
       {{- end}}
     spec:
       containers:
-      - name: {{ .Values.FinanceWiseDataAggregatorServices.name | quote }}
-        image: {{ .Values.FinanceWiseDataAggregatorServices.image.repository }}/{{ .Values.FinanceWiseDataAggregatorServices.image.name }}:{{ .Values.FinanceWiseDataAggregatorServices.image.tag }}
-        imagePullPolicy: {{ .Values.FinanceWiseDataAggregatorServices.image.pullPolicy }}
+      - name: {{ .Values.FinanceWiseServices.name | quote }}
+        image: {{ .Values.FinanceWiseServices.image.repository }}/{{ .Values.FinanceWiseServices.image.name }}:{{ .Values.FinanceWiseServices.image.tag }}
+        imagePullPolicy: {{ .Values.FinanceWiseServices.image.pullPolicy }}
 
         env:
-        {{- with .Values.FinanceWiseDataAggregatorServices.env }}
+        {{- with .Values.FinanceWiseServices.env }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
 
@@ -74,20 +74,20 @@ spec:
           - yarn start
 
         ports:
-        - containerPort: {{ .Values.FinanceWiseDataAggregatorServices.apiPort }}
+        - containerPort: {{ .Values.FinanceWiseServices.apiPort }}
           protocol: TCP
 
-        {{- with .Values.FinanceWiseDataAggregatorServices.resources }}
+        {{- with .Values.FinanceWiseServices.resources }}
         resources:
           {{- toYaml . | nindent 12 }}
         {{- end }}
 
-        {{- with .Values.FinanceWiseDataAggregatorServices.readinessProbe }}
+        {{- with .Values.FinanceWiseServices.readinessProbe }}
         readinessProbe:
           {{- toYaml . | nindent 12 }}
         {{- end }}
 
-        {{- with .Values.FinanceWiseDataAggregatorServices.livenessProbe }}
+        {{- with .Values.FinanceWiseServices.livenessProbe }}
         livenessProbe:
           {{- toYaml . | nindent 12 }}
         {{- end }}
@@ -96,17 +96,17 @@ spec:
         terminationMessagePolicy: File
 
 
-      {{- with .Values.FinanceWiseDataAggregatorServices.nodeSelector }}
+      {{- with .Values.FinanceWiseServices.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
         {{- end }}
 
-      {{- with .Values.FinanceWiseDataAggregatorServices.affinity }}
+      {{- with .Values.FinanceWiseServices.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
         {{- end }}
 
-      {{- with .Values.FinanceWiseDataAggregatorServices.tolerations }}
+      {{- with .Values.FinanceWiseServices.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
         {{- end }}

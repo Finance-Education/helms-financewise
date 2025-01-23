@@ -71,7 +71,7 @@ spec:
           - /bin/sh
         args:
           - '-c'
-          - poetry run uvicorn --host 0.0.0.0
+          - poetry run uvicorn --host 0.0.0.0 data_aggregator_microservices.app:app
 
         ports:
         - containerPort: {{ .Values.FinanceWiseDataAggregatorServices.apiPort }}

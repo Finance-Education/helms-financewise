@@ -17,6 +17,20 @@ entries:
     version: 0.1.0
   financewise-data-aggregator-services:
   - apiVersion: v1
+    appVersion: 0.1.2
+    created: "2025-01-23T20:32:08.341236303Z"
+    description: financewise-data-aggregator-services
+    digest: e4129d63524d014d6e0b6bb55b07f23a996039d40e0bf7c8b7e3016d80693b09
+    keywords:
+    - financewise
+    maintainers:
+    - email: infra@financewise.app.br
+      name: financewise-data-aggregator-services
+    name: financewise-data-aggregator-services
+    urls:
+    - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-data-aggregator-services-0.1.2/financewise-data-aggregator-services-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v1
     appVersion: 0.1.1
     created: "2025-01-23T20:24:59.400359392Z"
     description: financewise-data-aggregator-services
@@ -299,4 +313,4 @@ entries:
     urls:
     - https://github.com/Finance-Education/helms-financewise/releases/download/financewise-services-0.1.1/financewise-services-0.1.1.tgz
     version: 0.1.1
-generated: "2025-01-23T20:24:59.400413382Z"
+generated: "2025-01-23T20:32:08.341296286Z"
